@@ -1,0 +1,20 @@
+#Algoritma A
+x_1 = 100000
+x_2 =0,00001
+
+for _ in range (x_1):
+     x_1 += x_2
+print(f"Hasil Algoritma A: {x_1}")
+
+#Algoritma B
+total_x = 0,0
+
+x_1 = 0,00001
+x_2 = 100000
+
+for _ in range (x_2):
+     total_x += x_1
+
+total1 = x_1 * x_2
+total2 = x_2 + total1
+print(f" Hasil Algoritma B: {total2}")
