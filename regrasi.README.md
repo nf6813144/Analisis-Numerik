@@ -1,45 +1,32 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Data
-x = np.array([1.0, 2.0, 3.0])
-y = np.array([3.0, 8.0, 15.0])
-xp = 2.5
+x = np.array([10, 20, 30, 40])
+y = np.array([2.5, 4, 5, 6.5])
 
-def newton_interpolation(x, y, xp):
-    n = len(x)
-    diff = np.zeros((n, n))
-    diff[:, 0] = y
+n = len(x)
+x_mean = np.mean(x)
+y_mean = np.mean(y)
 
-    for j in range(1, n):
-        for i in range(n - j):
-            diff[i][j] = (diff[i+1][j-1] - diff[i][j-1]) / (x[i+j] - x[i])
+b1 =np.sum((x - x_mean) * (y - y_mean)) / np.sum((x - x_mean) **2)
+b0 = y_mean - b1 * x_mean
 
-    result = diff[0][0]
-    product = 1.0
+print("Persamaan regresi: y = {:.4f}x + {:.4f}".format (b1, b0))
 
-    for j in range(1, n):
-        product *= (xp - x[j-1])
-        result += diff[0][j] * product
+x_prediction = 100
+y_prediction = b0 + b1 * x_prediction
+print("Prediction waktu muat ukuran 25 MB =", y_prediction)
 
-    return result, diff
+x_line = np.linspace(min(x), max(x), 100)
+y_line = b0 + b1 * x_line
 
+plt.scatter(x, y, label="Data Asli", s=70)
+plt.plot(x_line, y_line, label="Garis Regresi Linier")
+plt.scatter(x_prediction, y_prediction, color="red", label=f"Prediksi x={x_prediction}")
 
-N, diff_table = newton_interpolation(x, y, xp)
-print("Hasil Newton f(2.5) =", N)
-
-x_plot = np.linspace(min(x), max(x), 200)
-y_plot = []
-for xv in x_plot:
-    yv, _ = newton_interpolation(x, y, xv)
-    y_plot.append(yv)
-
-plt.plot(x_plot, y_plot, label="Newton Interpolation")
-plt.scatter(x, y, color="red", label="Data Titik")
-plt.scatter(xp, N, color="green", label=f"f({xp})")
-plt.xlabel("x")
-plt.ylabel("y")
-plt.title("Grafik Newton Interpolation")
+plt.xlabel("Ukuran File (MB)")
+plt.ylabel("Waktu Muat (detik)")
+plt.title("Grafik Regresi Linier")
 plt.legend()
 plt.grid(True)
 plt.show()
